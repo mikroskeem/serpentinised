@@ -19,8 +19,8 @@ Redis Sentinel server directly and listens for any failover changes.
 
 You can use `serpentinised` as a Docker container:
 
-```
-docker run -p 6379:6379 -it astei/serpentinised:latest serpentinised -sentinel-address=sentinel-service.local:5000 -sentinel-master=mymaster
+```bash
+docker run -p 6379:6379 -it -e SERPENTINISED_SENTINEL_ADDRESS=sentinel-service.local:5000 -e SERPENTINISED_SENTINEL_MASTER=mymaster mikroskeem/serpentinised:latest
 ```
 
 ## Usage
