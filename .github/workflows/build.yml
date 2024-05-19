@@ -1,0 +1,53 @@
+name: "Build and publish Docker image"
+
+on:
+  pull_request:
+    branches:
+      - "master"
+  push:
+    branches:
+      - "master"
+
+jobs:
+  build:
+    permissions:
+      packages: write
+    runs-on: "ubuntu-latest"
+    steps:
+      - id: "checkout-code"
+        name: "Checkout code repo"
+        uses: "actions/checkout@v4"
+
+      - id: "meta"
+        name: "Docker meta"
+        uses: "docker/metadata-action@v5"
+        with:
+          images: |
+            ghcr.io/${{ github.repository_owner }}/serpentinised
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha
+
+      - id: "docker-buildx"
+        name: Set up Docker Buildx
+        uses: "docker/setup-buildx-action@v3"
+
+      - id: "login-ghcr"
+        name: "Log in to the Container registry"
+        uses: "docker/login-action@v3"
+        if: "${{ github.event_name != 'pull_request' }}"
+        with:
+          registry: "ghcr.io"
+          username: "${{ github.repository_owner }}"
+          password: "${{ github.token }}"
+
+      - id: "build-and-push"
+        name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: "${{ github.event_name != 'pull_request' }}"
+          tags: "${{ steps.meta.outputs.tags }}"
+          labels: "${{ steps.meta.outputs.labels }}"
+          platforms: "linux/amd64,linux/arm64"
