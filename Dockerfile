@@ -7,7 +7,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix nocgo -ldflags="-s -w" -
 FROM scratch
 COPY --from=builder serpentinised /usr/bin/serpentinised
 
+ENV SERPENTINISED_BIND="0.0.0.0:6379"
 ENV PATH="/usr/bin"
 EXPOSE 6379
 
-CMD ["serpentinised", "-bind=0.0.0.0:6379"]
+CMD ["serpentinised"]
