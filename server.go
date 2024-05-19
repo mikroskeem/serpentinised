@@ -1,10 +1,11 @@
 package main
 
 import (
-	"go.uber.org/zap"
 	"io"
 	"net"
 	"time"
+
+	"go.uber.org/zap"
 )
 
 type SerpentinisedServer struct {

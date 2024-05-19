@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/gomodule/redigo/redis"
-	"go.uber.org/zap"
 	"strings"
 	"sync/atomic"
 	"time"
+
+	"github.com/gomodule/redigo/redis"
+	"go.uber.org/zap"
 )
 
 type RedisSentinelMonitor struct {

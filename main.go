@@ -3,8 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"go.uber.org/zap"
 	"os"
+
+	"go.uber.org/zap"
 )
 
 func envDef(name, def string) string {
