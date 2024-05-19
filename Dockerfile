@@ -1,4 +1,4 @@
-FROM golang:1.14.1 AS builder
+FROM golang:1.22.3 AS builder
 
 # Build the DO controller
 WORKDIR $GOPATH/src/github.com/astei/serpentinised
