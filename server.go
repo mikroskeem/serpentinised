@@ -5,6 +5,7 @@ import (
 	"net"
 	"time"
 
+	"acln.ro/zerocopy"
 	"go.uber.org/zap"
 )
 
@@ -49,6 +50,7 @@ func (server *SerpentinisedServer) Listen() (err error) {
 			logger.Debug("wiring up connection to master",
 				zap.String("client", conn.RemoteAddr().String()),
 				zap.String("master", masterAddr))
+
 			go copyAndClose(masterConn, conn)
 			go copyAndClose(conn, masterConn)
 		}(conn)
@@ -57,7 +59,7 @@ func (server *SerpentinisedServer) Listen() (err error) {
 
 func copyAndClose(from, to net.Conn) {
 	defer from.Close()
-	if _, err := io.Copy(from, to); err != nil {
+	if _, err := zerocopy.Transfer(from, to); err != nil {
 		if err == io.EOF {
 			return
 		}
