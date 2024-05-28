@@ -40,7 +40,7 @@ func NewRedisSentinelMonitor(sentinelAddress, sentinelMaster string) (*RedisSent
 func (monitor *RedisSentinelMonitor) getInitialMaster() (string, error) {
 	result, err := redis.Strings(monitor.sentinelConn.Do("SENTINEL", "get-master-addr-by-name", monitor.sentinelMaster))
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 
 	address := fmt.Sprintf("%s:%s", result[0], result[1])
